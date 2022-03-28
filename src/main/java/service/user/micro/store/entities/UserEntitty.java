@@ -53,6 +53,7 @@ public class UserEntitty implements UserDetails {
     @JoinColumn(name = "user_id") // https://stackoverflow.com/a/62848296/548473
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OrderBy
+    @NonNull
     private Set<Role> roles;
 
 
