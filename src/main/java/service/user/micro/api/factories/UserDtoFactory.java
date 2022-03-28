@@ -8,6 +8,7 @@ public class UserDtoFactory {
 
     public UserDto makeProjectDto(UserEntitty entity) {
         System.out.println(" makeProjectDto ");
+        System.out.println(entity.toString());
         return UserDto.builder()
                 .username(entity.getUsername())
                 .role(entity.getRole())

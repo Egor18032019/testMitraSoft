@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import service.user.micro.api.service.user.UserService;
+import service.user.micro.api.utils.Const;
 import service.user.micro.config.handler.CustomAuthenticationFailureHandler;
 import service.user.micro.config.handler.MySimpleUrlAuthenticationSuccessHandler;
 
@@ -26,8 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        System.out.println("BCryptPasswordEncoder");
-        return new BCryptPasswordEncoder();
+         return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -36,11 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 // Доступ только для не зарегистрированных пользователей
-                .antMatchers("/login").permitAll()
-                .antMatchers("/registration").not().authenticated()
-                // Доступ только для пользователей с ролью Администратор
-                .antMatchers("/rest/admin/**").hasRole("ADMIN")
-                .antMatchers("/rest/news/**").hasRole("USER")
+                .antMatchers(Const.Login_URL).permitAll()
+                .antMatchers(Const.REST_URL).not().authenticated()
+                // Доступ только для пользователей с ролью ADMIN
+                .antMatchers(Const.ADMIN_URL + "/**").hasRole("ADMIN")
+                // Доступ только для пользователей с ролью USER
+                .antMatchers(Const.USER_URL+ "/**").hasRole("USER")
                 .antMatchers("/version").permitAll()
                 // Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated()
