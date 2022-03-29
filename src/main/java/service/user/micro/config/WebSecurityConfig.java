@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import service.user.micro.api.service.user.UserService;
 import service.user.micro.api.utils.Const;
+import service.user.micro.config.handler.CustomAccessDeniedHandler;
 import service.user.micro.config.handler.CustomAuthenticationFailureHandler;
 import service.user.micro.config.handler.MySimpleUrlAuthenticationSuccessHandler;
 
@@ -24,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final MySimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
-
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
          return new BCryptPasswordEncoder();
@@ -51,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(authenticationSuccessHandler)
-                .failureHandler(new CustomAuthenticationFailureHandler())
+                .failureHandler(customAuthenticationFailureHandler)
                 .and()
                 .logout().permitAll()
 
@@ -61,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .exceptionHandling().authenticationEntryPoint(accessDeniedHandler)
         ;
     }
 

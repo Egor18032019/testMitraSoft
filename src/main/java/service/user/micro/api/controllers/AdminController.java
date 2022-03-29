@@ -27,6 +27,7 @@ public class AdminController {
 
     @GetMapping("/all")
     public List<UserDto> getAllUsersInDB() {
+        System.out.println("getAllUsersInDB");
         return userRepository.findAll()
                 .stream()
                 .map(userDtoFactory::makeProjectDto)
