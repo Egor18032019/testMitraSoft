@@ -11,18 +11,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)//все поля приватные
 @Entity
 @Table(name = "users")
 public class UserEntitty implements UserDetails {
+
+    public UserEntitty() {
+
+    }
+
+    public UserEntitty(Long id, String username, @NonNull String password, Instant updatedAt, Instant createdAt, Role role, Role... roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.roles =  EnumSet.of(role, roles);
+    }
+    public UserEntitty(Long id, String username, @NonNull String password, Instant updatedAt, Instant createdAt, @NonNull Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.roles = roles;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE) //везде уникальные
             Long id;

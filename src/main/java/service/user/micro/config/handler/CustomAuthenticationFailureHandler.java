@@ -13,13 +13,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         String requestUrl = request.getHeader("Origin");
         System.out.println("CustomAuthenticationFailureHandler " + requestUrl);
 
-        response.setHeader("Access-Control-Allow-Origin", requestUrl);
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
-
         response.setStatus(401);
     }
 }

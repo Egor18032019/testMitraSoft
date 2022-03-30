@@ -33,7 +33,7 @@ public class RegistrationRestController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     ControllerHelper controllerHelper;
     UserRepository userRepository;
-    UserDtoFactory userDtoFactory;
+
 
     @PostMapping()
     public ResponseEntity<UserDto> createUser(
@@ -48,7 +48,7 @@ public class RegistrationRestController {
 
         final String username = optionalUserName.get();
         final String password = bCryptPasswordEncoder.encode(optionalUserPassword.get());
-        final Set roles = Collections.singleton(Role.USER);
+        final Set<Role> roles = Collections.singleton(Role.USER);
         final UserEntitty userForBD = optionalUserName
                 .map(controllerHelper::getUserOrThrowException)
                 .orElseGet(
@@ -64,7 +64,7 @@ public class RegistrationRestController {
         System.out.println(userForBD);
         userRepository.saveAndFlush(userForBD);
         System.out.println("soxranili");
-        return ResponseEntity.ok().body(userDtoFactory.makeProjectDto(userForBD));
+        return ResponseEntity.ok().body(UserDtoFactory.makeProjectDto(userForBD));
 
     }
 }

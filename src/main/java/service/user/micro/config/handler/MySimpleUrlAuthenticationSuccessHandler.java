@@ -12,7 +12,6 @@ import service.user.micro.api.dto.UserDto;
 import service.user.micro.api.factories.UserDtoFactory;
 import service.user.micro.store.entities.UserEntitty;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +39,6 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         objectMapper.findAndRegisterModules();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         response.getWriter().write(objectMapper.writeValueAsString(autUserDto));
-//        response.getWriter().write(String.valueOf(autUserDto));
         response.setStatus(200);
-     }
+    }
 }

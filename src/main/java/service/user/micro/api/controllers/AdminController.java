@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     UserRepository userRepository;
-    UserDtoFactory userDtoFactory;
+
 
     @GetMapping("/all")
     public List<UserDto> getAllUsersInDB() {
         System.out.println("getAllUsersInDB");
         return userRepository.findAll()
                 .stream()
-                .map(userDtoFactory::makeProjectDto)
+                .map(UserDtoFactory::makeProjectDto)
                 .collect(Collectors.toList());
     }
 
