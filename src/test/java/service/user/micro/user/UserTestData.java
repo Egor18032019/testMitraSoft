@@ -8,8 +8,6 @@ import service.user.micro.store.entities.UserEntitty;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -31,33 +29,16 @@ public class UserTestData {
         return mvcResult -> equalsAssertion.accept(asUserTos(mvcResult), expected);
     }
 
-    public static ResultMatcher jsonMapMatcher(
-            String expected,
-            BiConsumer<String, String> equalsAssertion
-    ) {
-
-          return mvcResult -> {
-            String jsonActual = mvcResult.getResponse().getContentAsString();
-
-            equalsAssertion.accept(jsonActual, expected);
-        };
-    }
-
     public static List<UserDto> asUserTos(MvcResult mvcResult) throws IOException {
         String jsonActual = mvcResult.getResponse().getContentAsString();
-        System.out.println("jsonActual");
-        System.out.println(jsonActual);
         return JsonUtil.readValues(jsonActual, UserDto.class);
     }
 
     public static <T> void assertListEquals(List<T> actual, List<T> expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 //        assertThat(actual).usingRecursiveComparison().ignoringFields("id","created_at","updated_at").isEqualTo(expected);
     }
 
-    public static <T> void assertMapEquals(HashMap<String, HashMap<String, String>> actual, HashMap<String, HashMap<String, String>> expected) {
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-    }
 
     public static ResultMatcher jsonMatcher(String expected, BiConsumer<String, String> equalsAssertion) {
         return mvcResult -> {
