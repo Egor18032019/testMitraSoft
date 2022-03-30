@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class JsonUtil {
@@ -19,6 +20,14 @@ public class JsonUtil {
         objectMapper.registerModule(new JavaTimeModule());
         ObjectReader reader = objectMapper.readerFor(clazz);
         return reader.<T>readValues(json).readAll();
+    }
+
+    public static  String  convertJson  ( HashMap<String, HashMap<String, String>> map) throws JsonProcessingException {
+        String json = new ObjectMapper().writeValueAsString(map);
+        return json;
+    }
+    public static   HashMap<String, HashMap<String, String>>  convertHashMap  ( String json) throws JsonProcessingException {
+        return new ObjectMapper().readValue(json, HashMap.class);
     }
 
     public static <T> T readValue(String json, Class<T> clazz) throws JsonProcessingException {
