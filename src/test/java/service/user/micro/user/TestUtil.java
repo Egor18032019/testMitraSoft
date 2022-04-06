@@ -10,4 +10,7 @@ public class TestUtil {
         AuthorizedUser authorizedUser = new AuthorizedUser(user);
         return SecurityMockMvcRequestPostProcessors.user(authorizedUser);
     }
+
+
+
 }

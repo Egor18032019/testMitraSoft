@@ -2,9 +2,6 @@ package service.user.micro.dto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import service.user.micro.api.dto.UserDto;
 
 import java.time.Instant;
@@ -25,6 +22,7 @@ public class UserDtoTest {
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .build();
+
         Assertions.assertNotNull(result);
         Assertions.assertNotNull(result.getUsername());
         Assertions.assertNotNull(result.getRole());

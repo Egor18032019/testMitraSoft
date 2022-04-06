@@ -15,9 +15,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTestData {
     public static final long ADMIN_60000_ID = 60000;
+    public static final long WRONG_60001_ID = 60001;
     public static final long USER_60002_ID = 60002;
 
     public static final UserEntitty user_60000 = new UserEntitty(ADMIN_60000_ID, "qwe", "123", Instant.parse("2022-03-29T05:18:35.955806Z"), Instant.parse("2022-03-29T05:18:35.955806Z"), Role.ADMIN);
+    public static final UserEntitty user_60001 = new UserEntitty(WRONG_60001_ID, "WRONG", "123", Instant.parse("2022-03-29T05:18:35.955806Z"), Instant.parse("2022-03-29T05:18:35.955806Z"), Role.USER);
     public static final UserEntitty user_60002 = new UserEntitty(USER_60002_ID, "asd", "123", Instant.parse("2022-03-30T07:04:10.710532Z"), Instant.parse("2022-03-30T07:04:10.710532Z"), Role.USER);
     public static final List<UserEntitty> usersListForBDonTest = List.of(user_60000, user_60002);
 
