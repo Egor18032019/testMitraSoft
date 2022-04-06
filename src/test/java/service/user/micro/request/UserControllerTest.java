@@ -45,4 +45,11 @@ public class UserControllerTest extends AbstractUserRestControllerTest {
                         (actual, expected) -> assertThat(actual).isEqualTo(expected)
                 ));
     }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
 }

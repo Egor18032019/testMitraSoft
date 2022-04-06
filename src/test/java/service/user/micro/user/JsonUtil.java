@@ -26,7 +26,7 @@ public class JsonUtil {
         return json;
     }
 
-    public static HashMap<String, HashMap<String, String>> convertHashMap(String json) throws JsonProcessingException {
+    public static HashMap convertHashMap(String json) throws JsonProcessingException {
         return new ObjectMapper().readValue(json, HashMap.class);
     }
 }

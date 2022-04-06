@@ -27,7 +27,8 @@ public class AdminControllerTest extends AbstractUserRestControllerTest{
                 .andExpect(
                         jsonListMatcher(
                                 UserDtoFactory.makeUserDtoFromListUserEntity(usersListForBDonTest),
-                                UserTestData::assertListEquals));
+                                UserTestData::assertListEquals))
+        .andDo(print());
     }
 
     @Test

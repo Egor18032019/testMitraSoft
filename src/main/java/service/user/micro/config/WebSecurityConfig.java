@@ -52,7 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
                 .and()
-                .logout().permitAll()
+                .logout()
+                .deleteCookies("JSESSIONID")
+                .permitAll()
 
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
