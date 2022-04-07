@@ -12,5 +12,4 @@ class MicroApplicationTests {
 
 }
 
-//TODO сделать тест на UserDtoFactory
 //TODO подумать над тестами для БД
