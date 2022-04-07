@@ -3,6 +3,7 @@ package service.user.micro.api.controllers;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,8 +40,10 @@ public class RegistrationRestController {
     public ResponseEntity<UserDto> createUser(
             @RequestParam(value = "username", required = true) Optional<String> optionalUserName,
             @RequestParam(value = "password", required = true) Optional<String> optionalUserPassword) {
-        optionalUserName = optionalUserName.filter(projectName -> !projectName.trim().isEmpty());
+
         System.out.println("optionalUserName " + optionalUserName);
+        System.out.println("optionalUserPassword " + optionalUserPassword);
+        optionalUserName = optionalUserName.filter(projectName -> !projectName.trim().isEmpty());
         boolean allFieldHave = optionalUserName.isPresent() && optionalUserPassword.isPresent();
         if (!allFieldHave) {
             throw new BadRequestException("Password or name can't be empty.");
@@ -60,13 +63,14 @@ public class RegistrationRestController {
                                         .build()
                 );
 
-        System.out.println("userForBD");
-        System.out.println(userForBD);
+
         userRepository.saveAndFlush(userForBD);
-        System.out.println("soxranili");
-        return ResponseEntity.ok().body(UserDtoFactory.makeProjectDto(userForBD));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserDtoFactory.makeProjectDto(userForBD));
 
     }
+
+
 }
 
 

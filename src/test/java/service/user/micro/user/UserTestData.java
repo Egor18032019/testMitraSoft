@@ -1,5 +1,6 @@
 package service.user.micro.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import service.user.micro.api.dto.UserDto;
@@ -7,6 +8,7 @@ import service.user.micro.store.entities.Role;
 import service.user.micro.store.entities.UserEntitty;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -30,7 +32,9 @@ public class UserTestData {
 
         return mvcResult -> equalsAssertion.accept(asUserTos(mvcResult), expected);
     }
-
+    public static <T> void assertEquals(T actual, T expected) {
+        assertThat(actual).usingRecursiveComparison().ignoringFields("id", "roles").isEqualTo(expected);
+    }
     public static List<UserDto> asUserTos(MvcResult mvcResult) throws IOException {
         String jsonActual = mvcResult.getResponse().getContentAsString();
         return JsonUtil.readValues(jsonActual, UserDto.class);
@@ -47,5 +51,10 @@ public class UserTestData {
             String jsonActual = mvcResult.getResponse().getContentAsString();
             equalsAssertion.accept(jsonActual, expected);
         };
+    }
+
+    public static UserDto asUserDto(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        String jsonActual = mvcResult.getResponse().getContentAsString();
+        return JsonUtil.readValue(jsonActual, UserDto.class);
     }
 }

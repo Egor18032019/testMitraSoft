@@ -29,4 +29,18 @@ public class JsonUtil {
     public static HashMap convertHashMap(String json) throws JsonProcessingException {
         return new ObjectMapper().readValue(json, HashMap.class);
     }
+
+    public static <T> String writeValue(T obj) throws JsonProcessingException {
+        objectMapper.registerModule(new JavaTimeModule());
+        String json =objectMapper.writeValueAsString(obj);
+        System.out.println("json");
+        System.out.println(json);
+        return json;
+    }
+
+    public static <T> T readValue(String json, Class<T> clazz) throws JsonProcessingException {
+        objectMapper.registerModule(new JavaTimeModule());
+
+        return objectMapper.readValue(json, clazz);
+    }
 }
