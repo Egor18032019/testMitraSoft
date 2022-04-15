@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import service.user.micro.api.filter.CustomURLFilter;
+import service.user.micro.store.repositories.UserRepository;
 
 import javax.annotation.PostConstruct;
 
@@ -20,7 +22,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @Transactional
 @AutoConfigureMockMvc
 public abstract class AbstractUserRestControllerTest {
-
+    @Autowired
+    UserRepository userRepository;
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 
     static {
@@ -38,6 +41,7 @@ public abstract class AbstractUserRestControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
+                .addFilter(new CustomURLFilter(userRepository))
                 .apply(springSecurity())
                 .build();
     }
@@ -45,6 +49,7 @@ public abstract class AbstractUserRestControllerTest {
     protected ResultActions perform(SecurityMockMvcRequestBuilders.FormLoginRequestBuilder builder) throws Exception {
         return mockMvc.perform(builder);
     }
+
     protected ResultActions perform(MockHttpServletRequestBuilder builder) throws Exception {
         return mockMvc.perform(builder);
     }

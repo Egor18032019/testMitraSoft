@@ -1,30 +1,21 @@
 package service.user.micro.request;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import service.user.micro.api.dto.UserDto;
-import service.user.micro.api.exceptions.BadRequestException;
 import service.user.micro.api.factories.UserDtoFactory;
-import service.user.micro.store.entities.Role;
 import service.user.micro.store.entities.UserEntitty;
 import service.user.micro.store.repositories.UserRepository;
-import service.user.micro.user.JsonUtil;
 import service.user.micro.user.UserTestData;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static service.user.micro.api.utils.Const.REST_URL;
 import static service.user.micro.user.UserTestData.user_60001;
 import static service.user.micro.user.UserTestData.user_60002;
-
-import org.junit.jupiter.api.Assertions;
-
-import java.util.Collections;
-import java.util.Set;
 
 
 public class RegistrationControllerTest extends AbstractUserRestControllerTest {
@@ -34,7 +25,6 @@ public class RegistrationControllerTest extends AbstractUserRestControllerTest {
 
     @Test
     void registerNewUser() throws Exception {
-
         UserDto receivedUser = UserTestData.asUserDto(
                 perform(
                         MockMvcRequestBuilders.post(REST_URL)
