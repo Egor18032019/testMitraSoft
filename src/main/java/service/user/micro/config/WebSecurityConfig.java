@@ -26,7 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MySimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final UserRepository userRepository;
 
 
     @Bean
@@ -37,8 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-//                .addFilterBefore(new CustomURLFilter(userRepository),
-//                        CustomURLFilter.class )
                 .authorizeRequests()
                 // Доступ только для не зарегистрированных пользователей
                 .antMatchers(Const.Login_URL).permitAll()
