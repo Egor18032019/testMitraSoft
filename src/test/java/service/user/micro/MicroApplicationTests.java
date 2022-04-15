@@ -11,6 +11,5 @@ class MicroApplicationTests {
 	}
 
 }
-//TODO сделать тест на RegistrationController
-//TODO сделать тест на UserDtoFactory
-//TODO подумать над тестами для БД
+
+//TODO подумать над тестами для БД. надо ли ?
