@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import service.user.micro.api.controllers.helpers.ControllerHelper;
 import service.user.micro.api.dto.UserDto;
 import service.user.micro.api.exceptions.BadRequestException;
 import service.user.micro.api.factories.UserDtoFactory;
@@ -32,7 +31,6 @@ import java.util.Set;
 public class RegistrationRestController {
 
     BCryptPasswordEncoder bCryptPasswordEncoder;
-    ControllerHelper controllerHelper;
     UserRepository userRepository;
 
 
@@ -41,8 +39,8 @@ public class RegistrationRestController {
             @RequestParam(value = "username", required = true) Optional<String> optionalUserName,
             @RequestParam(value = "password", required = true) Optional<String> optionalUserPassword) {
 
-        System.out.println("optionalUserName " + optionalUserName);
-        System.out.println("optionalUserPassword " + optionalUserPassword);
+        System.out.println("optionalUserName - " + optionalUserName);
+        System.out.println("optionalUserPassword - " + optionalUserPassword);
         optionalUserName = optionalUserName.filter(projectName -> !projectName.trim().isEmpty());
         boolean allFieldHave = optionalUserName.isPresent() && optionalUserPassword.isPresent();
         if (!allFieldHave) {
@@ -52,22 +50,17 @@ public class RegistrationRestController {
         final String username = optionalUserName.get();
         final String password = bCryptPasswordEncoder.encode(optionalUserPassword.get());
         final Set<Role> roles = Collections.singleton(Role.USER);
-        final UserEntitty userForBD = optionalUserName
-                .map(controllerHelper::getUserOrThrowException)
-                .orElseGet(
-                        () ->
-                                UserEntitty.builder()
-                                        .username(username)
-                                        .password(password)
-                                        .roles(roles)
-                                        .build()
-                );
-
+        // так можем делать потому что предварительно в фильтре проверили
+        // есть или нет юзер с таким именем в БД
+        final UserEntitty userForBD = UserEntitty.builder()
+                .username(username)
+                .password(password)
+                .roles(roles)
+                .build();
 
         userRepository.saveAndFlush(userForBD);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(UserDtoFactory.makeProjectDto(userForBD));
-
     }
 
 

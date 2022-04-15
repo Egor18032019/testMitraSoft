@@ -9,11 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import service.user.micro.api.filter.CustomURLFilter;
 import service.user.micro.api.service.user.UserService;
 import service.user.micro.api.utils.Const;
 import service.user.micro.config.handler.CustomAccessDeniedHandler;
 import service.user.micro.config.handler.CustomAuthenticationFailureHandler;
 import service.user.micro.config.handler.MySimpleUrlAuthenticationSuccessHandler;
+import service.user.micro.store.repositories.UserRepository;
 
 @RequiredArgsConstructor
 @Configuration
@@ -24,15 +26,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MySimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final UserRepository userRepository;
+
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-         return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-
+//                .addFilterBefore(new CustomURLFilter(userRepository),
+//                        CustomURLFilter.class )
                 .authorizeRequests()
                 // Доступ только для не зарегистрированных пользователей
                 .antMatchers(Const.Login_URL).permitAll()
@@ -40,29 +46,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Доступ только для пользователей с ролью ADMIN
                 .antMatchers(Const.ADMIN_URL + "/**").hasRole("ADMIN")
                 // Доступ только для пользователей с ролью USER
-                .antMatchers(Const.USER_URL+ "/**").hasRole("USER")
+                .antMatchers(Const.USER_URL + "/**").hasRole("USER")
                 .antMatchers("/version").permitAll()
                 // Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated()
-
                 .and()
                 // Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
+
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-
                 .and()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .csrf().disable()
                 .cors()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(accessDeniedHandler)
+                .and()
+
+
         ;
     }
 

@@ -15,7 +15,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> exception(Exception ex, WebRequest request) throws Exception {
 
         log.error("Exception during execution of application", ex);
-
+        System.out.println("! Херня какая то произошла!");
         return handleException(ex, request);
     }
 }

@@ -12,4 +12,4 @@ class MicroApplicationTests {
 
 }
 
-//TODO подумать над тестами для БД
+//TODO подумать над тестами для БД. надо ли ?
